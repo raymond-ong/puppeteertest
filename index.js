@@ -28,11 +28,37 @@ app.post('/createpdfbyhtml', (req, res) => {
 // [2] Using Puppeteer to create the headless chrome
 // https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/
 async function printPDF(res) {
-    console.log('printPDF start');
+    //const url = 'https://uwmxm.csb.app/';
+    const url = 'http://localhost:3000/reporting';
+    console.log('printPDF start', url);
+        
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto('http://localhost:3000/', {waitUntil: 'networkidle0'});
-    const pdf = await page.pdf({ format: 'A4' });
+
+    // await page.emulateMedia("screen");
+    await page.setViewport({ width: 1190, height: 1684 }); // assuming 144dpi, that is a4 size
+    //await page.setViewport({width: 794, height: 1122, deviceScaleFactor: 2});
+
+    await page.goto(url, {waitUntil: 'networkidle0'});
+    const pdf = await page.pdf({ 
+        format: 'A4', 
+        displayHeaderFooter: true,
+        headerTemplate: '<div></div>',
+        //footerTemplate: `<div style="font-size: 8px; display: inline-block; border: 1px solid red">Page <span class="pageNumber"/><span> of </span><span class="totalPages"/></div>`,
+        footerTemplate: `
+          <div style="color: lightgray; font-size: 10px; padding-top: 5px; text-align: center; width: 100%;">
+            Page <span class="pageNumber"></span>
+            of <span class="totalPages"></span>
+          </div>
+        `,
+        printBackground: true,
+        margin: {
+            top: 60,
+            left: 25,
+            bottom: 50,
+            right: 25,
+            
+        } });
    
     await browser.close();
     res.send(pdf);
@@ -42,6 +68,12 @@ async function printPDF(res) {
 
 app.post('/createpdf', (req, res) => {
     console.log('post request received', req.body)
+    
+    printPDF(res)    
+})
+
+app.get('/createpdf', (req, res) => {
+    console.log('get request received')
     
     printPDF(res)    
 })

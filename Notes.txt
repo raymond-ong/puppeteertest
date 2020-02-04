@@ -1,0 +1,2 @@
+How to run the project:
+Enter this in the command line: nodemon index.js
