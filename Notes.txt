@@ -1,2 +1,20 @@
 How to run the project:
 Enter this in the command line: nodemon index.js
+
+
+
+
+CREATE TABLE FileUploads(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  Name TEXT NOT NULL,
+  Fileblob BLOB NOT NULL
+  )
+  
+DROP TABLE FileUploads
+
+
+INSERT INTO FileUploads(Id, Name, Fileblob)
+
+
+CREATE UNIQUE INDEX idx_fileuploads_name 
+ON FileUploads (Name);

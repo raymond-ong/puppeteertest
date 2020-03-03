@@ -2,7 +2,9 @@ const express  = require('express');
 const convertHTMLToPDF = require("pdf-puppeteer");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+const upload = require("express-fileupload");
+const fileUploader = require('./fileUploader');
 
 const app = express();
 const port = 5000;
@@ -10,6 +12,7 @@ const port = 5000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(upload());
 
 // [1] using convertHTMLToPDF
 // So far so good with simple HTML pages, but might be cumbersome in the end because we need to reconstruct the HTML Page
@@ -83,5 +86,32 @@ app.get('/createpdf', (req, res) => {
     
     printPDF(res)    
 })
+
+
+app.post('/fileupload', (req, res) => {
+    console.log('fileupload');
+    fileUploader.handleUpload(req, res);
+})
+
+app.post('/getfile', (req, res) => {
+    console.log('getfile');
+    fileUploader.getFile(req, res);
+})
+
+app.get('/files/:name', (req, res) => {
+    console.log('getfile');
+    fileUploader.getFile2(req.params.name, res);
+})
+
+app.get('/getfilelist', (req, res) => {
+    console.log('getfilelist');
+    fileUploader.getFileList(req, res);
+})
+
+app.post('/deletefile', (req, res) => {
+    console.log('deleteFile');
+    fileUploader.deleteFile(req, res);
+})
+
 
 app.listen(port, () => console.log('Listening on port', port));
