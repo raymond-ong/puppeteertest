@@ -3,7 +3,7 @@ Enter this in the command line: nodemon index.js
 
 
 
-
+-- For the Image Uploader
 CREATE TABLE FileUploads(
   Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   Name TEXT NOT NULL,
@@ -13,8 +13,30 @@ CREATE TABLE FileUploads(
 DROP TABLE FileUploads
 
 
-INSERT INTO FileUploads(Id, Name, Fileblob)
-
-
 CREATE UNIQUE INDEX idx_fileuploads_name 
 ON FileUploads (Name);
+
+-- For the Layout TABLE
+CREATE TABLE Layouts(
+   Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Name TEXT NOT NULL, 
+  LayoutJson TEXT NOT NULL, 
+  LastUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+  NumRows INTEGER NOT NULL, 
+  NumCols INTEGER NOT NULL, 
+  PageFilterFields TEXT
+);
+
+CREATE UNIQUE INDEX idx_layouts_name 
+ON Layouts (Name);
+
+-- For the HierarchyView TABLE
+CREATE TABLE HierarchyView(
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ViewName TEXT NOT NULL, 
+  HierarchyJson TEXT NOT NULL, 
+  NodeSettingsJson TEXT
+);
+
+CREATE UNIQUE INDEX idx_hierarchy_name 
+ON HierarchyView (ViewName);

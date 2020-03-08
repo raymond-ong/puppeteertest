@@ -5,6 +5,8 @@ const cors = require('cors');
 const upload = require("express-fileupload");
 const fileUploader = require('./fileUploader');
 const pdfGenerator = require('./pdfGenerator');
+const layoutController = require('./layoutController');
+const hierarchyController = require('./hierarchyController');
 
 const app = express();
 const port = 5000;
@@ -22,6 +24,7 @@ var callbackConvertByHtml = function (res, pdf) {
     res.send(pdf);
 }
 
+/* START: PDF */
 app.post('/createpdfbyhtml', (req, res) => {
     console.log('post request received', req.body)
     
@@ -39,8 +42,9 @@ app.get('/createpdf', (req, res) => {
     
     pdfGenerator.printPDF(req, res);
 })
+/* END: PDF */
 
-
+/* START: File/Image */
 app.post('/fileupload', (req, res) => {
     console.log('fileupload');
     fileUploader.handleUpload(req, res);
@@ -65,6 +69,23 @@ app.post('/deletefile', (req, res) => {
     console.log('deleteFile');
     fileUploader.deleteFile(req, res);
 })
+/* END: File/Image */
 
+/* START: Layout */
+app.post('/createupdatelayout', (req, res) => {
+    console.log('create/update layout');
+    layoutController.createUpdateLayout(req, res);
+})
+
+app.get('/fetchSavedLayouts', (req, res) => {
+    console.log('fetchSavedLayouts');
+    layoutController.fetchSavedLayouts(req.params.name, res);
+})
+
+/* END: Layout */
+
+
+/* START: Hierarchy */
+/* END: Hierarchy */
 
 app.listen(port, () => console.log('Listening on port', port));
