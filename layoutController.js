@@ -12,7 +12,7 @@ module.exports = {
             err => {
                 if (err) {
                     console.log(err.message)
-                    res.status(500).send("Error in Saving ", err.message);
+                    res.status(500).send("[fetchSavedLayouts] Error in Saving ", err.message);
                 }
                 else {
                     res.status(200).send("OK");

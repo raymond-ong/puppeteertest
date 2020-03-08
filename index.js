@@ -79,13 +79,22 @@ app.post('/createupdatelayout', (req, res) => {
 
 app.get('/fetchSavedLayouts', (req, res) => {
     console.log('fetchSavedLayouts');
-    layoutController.fetchSavedLayouts(req.params.name, res);
+    layoutController.fetchSavedLayouts(req, res);
 })
 
 /* END: Layout */
 
 
-/* START: Hierarchy */
+/* START: Hierarchy View */
+app.post('/saveHierarchyView', (req, res) => {
+    console.log('saveHierarchyView');
+    hierarchyController.saveHierarchyView(req, res);
+})
+
+app.get('/fetchHierarchyViews', (req, res) => {
+    console.log('fetchHierarchyViews');
+    hierarchyController.fetchHierarchyViews(req, res);
+})
 /* END: Hierarchy */
 
 app.listen(port, () => console.log('Listening on port', port));
