@@ -15,7 +15,7 @@ module.exports = {
                     res.status(500).send("[fetchSavedLayouts] Error in Saving ", err.message);
                 }
                 else {
-                    res.status(200).send("OK");
+                    res.status(200).send(req.body);
                 }
                 res.end();
                 db.close();        
