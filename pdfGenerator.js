@@ -1,12 +1,19 @@
 const puppeteer = require('puppeteer');
 
+const appendParams = (url, params) => {
+    for (let prop in params) {
+        url.searchParams.append(prop, params[prop]);
+    }
+}
+
 module.exports = {
 // [2] Using Puppeteer to create the headless chrome
 // https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/
     printPDF: async function(req, res) {
     //const url = 'https://uwmxm.csb.app/';
-        const url = 'http://localhost:3000/reporting';
-        console.log('printPDF start', url);
+        const url = new URL('http://localhost:3000/reporting');
+        appendParams(url, req.body);
+        console.log('printPDF start', url.toString());
             
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
@@ -15,7 +22,7 @@ module.exports = {
         await page.setViewport({ width: 1190, height: 1684 }); // assuming 144dpi, that is a4 size
         //await page.setViewport({width: 794, height: 1122, deviceScaleFactor: 2});
 
-        await page.goto(url, {waitUntil: 'networkidle0'});
+        await page.goto(url.toString(), {waitUntil: 'networkidle0', timeout: 120000});
         const pdf = await page.pdf({ 
             format: 'A4', 
             displayHeaderFooter: true,
@@ -43,7 +50,9 @@ module.exports = {
             } });
     
         await browser.close();
-        res.send(pdf);
+        // res.setHeader('Content-Type', 'application/pdf');
+        // res.setHeader('Content-Disposition', 'attachment; filename=Report.pdf');
+        res.end(pdf);
         console.log('printPDF end');
         return pdf;
     }
