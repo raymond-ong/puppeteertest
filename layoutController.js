@@ -3,12 +3,13 @@ module.exports = {
         console.log('createUpdateLayout');
         const sqlite3 = require('sqlite3').verbose();
         var db = new sqlite3.Database('IsaeApr.db');
-        db.run(`REPLACE INTO Layouts(Name, LayoutJson, NumRows, NumCols, PageFilterFields) VALUES(?, ?, ?, ?, ?)`, 
+        db.run(`REPLACE INTO Layouts(Name, LayoutJson, NumRows, NumCols, PageFilterFields, PageApiData) VALUES(?, ?, ?, ?, ?, ?)`, 
             [req.body.name,
             req.body.layoutJson, 
             req.body.numRows,
             req.body.numCols,
-            req.body.pageFilterFields], 
+            req.body.pageFilterFields,
+            req.body.pageApiData], 
             err => {
                 if (err) {
                     console.log(err.message)
@@ -48,7 +49,8 @@ module.exports = {
                         lastUpdateDate: row.LastUpdateDate,
                         numRows: row.NumRows,
                         numCols: row.NumCols,
-                        pageFilterFields: row.PageFilterFields
+                        pageFilterFields: row.PageFilterFields,
+                        pageApiData: row.PageApiData
                     });
                 })
             }

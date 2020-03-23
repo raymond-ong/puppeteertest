@@ -40,3 +40,7 @@ CREATE TABLE HierarchyView(
 
 CREATE UNIQUE INDEX idx_hierarchy_name 
 ON HierarchyView (ViewName);
+
+
+ALTER TABLE Layouts
+  ADD PageApiData TEXT;

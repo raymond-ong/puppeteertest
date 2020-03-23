@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
 
 const appendParams = (url, params) => {
+    if (!params) {
+        return;
+    }
     for (let prop in params) {
         url.searchParams.append(prop, params[prop]);
     }
